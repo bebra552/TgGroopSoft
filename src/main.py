@@ -3,6 +3,7 @@ import os
 import asyncio
 import logging
 import csv
+import webbrowser
 from datetime import datetime
 from pathlib import Path
 from io import StringIO
@@ -444,6 +445,19 @@ class TelegramParserGUI(QMainWindow):
 
         layout.addWidget(session_group)
 
+        # Группа обратной связи
+        feedback_group = QGroupBox("💬 Обратная связь")
+        feedback_layout = QVBoxLayout(feedback_group)
+
+        self.feedback_btn = QPushButton("💡 Предложить улучшение")
+        self.feedback_btn.clicked.connect(self.open_feedback)
+        self.feedback_btn.setStyleSheet(
+            "QPushButton { background-color: #2196F3; color: white; padding: 10px; font-weight: bold; }"
+        )
+        feedback_layout.addWidget(self.feedback_btn)
+
+        layout.addWidget(feedback_group)
+
         # Информация
         info_label = QLabel(
             "ℹ️ Для получения API ID и Hash:\n"
@@ -560,6 +574,10 @@ class TelegramParserGUI(QMainWindow):
                                     "Сессия очищена. При следующем парсинге потребуется повторная авторизация.")
         except Exception as e:
             QMessageBox.warning(self, "Ошибка", f"Не удалось очистить сессию: {str(e)}")
+
+    def open_feedback(self):
+        """Открытие ссылки для обратной связи"""
+        webbrowser.open("https://t.me/Userspoi")
 
     def setup_logging(self):
         """Настройка логирования"""
